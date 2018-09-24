@@ -37,13 +37,12 @@ class Main
   end
   def write(result)
     i = 0
-    while i <= result.length - 1
-      if result[i][1] != 1
-        print result[i][0] + ', ' + result[i][1].to_s + ' pts' + "\n"
+    result.each do |k,v|
+      if v != 1
+        print k + ', ' + v.to_s + ' pts' + "\n"
       else
-        print result[i][0] + ', ' + result[i][1].to_s + ' pt' + "\n"
+        print k + ', ' + v.to_s + ' pt' + "\n"
       end
-      i += 1
     end
   end
   def start
