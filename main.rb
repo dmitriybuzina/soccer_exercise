@@ -1,53 +1,50 @@
-require 'pry'
-
 class Main
   def read
     puts 'Write path of file'
     text = File.open(gets.chomp , 'r'){ |file| file.read }
     text.split(/\W+/)
   end
-  def parse(chars)
-    chars.each_index do |i|
-      if chars[i] == 'FC'
-        chars[i+1] = chars[i] + ' ' + chars[i+1]
+
+  def parse(array_data)
+    array_data.each_index do |i|
+      if array_data[i] == 'FC'
+        array_data[i + 1] = array_data[i] + ' ' + array_data[i + 1]
       end
     end
-    chars.delete('FC')
+    array_data.delete('FC')
     result = {}
-    i = 0
-    while i < chars.length - 1
-      unless result.key? chars[i]
-        result[chars[i]] = 0
+    (0...array_data.length).step(4).each do |i|
+      unless result.key? array_data[i]
+        result[array_data[i]] = 0
       end
-      unless result.key? chars[i+2]
-        result[chars[i+2]] = 0
+      unless result.key? array_data[i + 2]
+        result[array_data[i + 2]] = 0
       end
-      if chars[i+1].to_i > chars[i+3].to_i      #win first team
-        result[chars[i].to_s] += 3
-      elsif chars[i+1].to_i < chars[i+3].to_i   #win second team
-        result[chars[i+2].to_s] += 3
-      elsif chars[i+1].to_i == chars[i+3].to_i  #no win
-        result[chars[i].to_s] += 1
-        result[chars[i+2].to_s] += 1
+      if array_data[i + 1].to_i > array_data[i + 3].to_i      #win first team
+        result[array_data[i].to_s] += 3
+      elsif array_data[i + 1].to_i < array_data[i + 3].to_i   #win second team
+        result[array_data[i + 2].to_s] += 3
+      elsif array_data[i + 1].to_i == array_data[i + 3].to_i  #no win
+        result[array_data[i].to_s] += 1
+        result[array_data[i + 2].to_s] += 1
       end
-      i += 4
     end
-    result = result.sort_by{|k,v| k}
-    result.sort_by{|k,v| -v}
+    result = result.sort_by { |k, v| k }
+    result.sort_by{ |k, v| -v }
   end
+
   def write(result)
-    i = 0
-    result.each do |k,v|
-      if v != 1
-        print k + ', ' + v.to_s + ' pts' + "\n"
-      else
-        print k + ', ' + v.to_s + ' pt' + "\n"
-      end
+    result.each do |k, v|
+      print "#{k}, #{v.to_s} #{ v!= 1 ? 'pts' : 'pt' }\n"
     end
   end
+
   def start
-    write(parse(read))
+    file = read
+    parsed = parse file
+    write parsed
   end
 end
+
 main = Main.new
 main.start
