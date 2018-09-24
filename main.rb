@@ -32,17 +32,18 @@ class Main
       end
       i += 4
     end
-    result.sort_by{|k,v| v}
+    result = result.sort_by{|k,v| k}
+    result.sort_by{|k,v| -v}
   end
   def write(result)
-    i = result.length - 1
-    while i >= 0
+    i = 0
+    while i <= result.length - 1
       if result[i][1] != 1
         print result[i][0] + ', ' + result[i][1].to_s + ' pts' + "\n"
       else
         print result[i][0] + ', ' + result[i][1].to_s + ' pt' + "\n"
       end
-      i -= 1
+      i += 1
     end
   end
   def start
